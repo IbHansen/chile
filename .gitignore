@@ -1,0 +1,39 @@
+# Generated - master: C:\deploy\bookcontrol\shared\.gitignore (copied in by publish.bat)
+#
+# Only what GitHub Actions needs to build the site goes into the repo. The rest of what
+# publish copies here (book.bat, latex\, data\, diagram sources) is for local use - the
+# live server, book pdf - and so is everything the local tools write (_build\, exports\).
+#
+# So: ignore everything, then let back in what the site is built from.
+*
+!*/
+
+# the book: its configuration, pages and bibliography
+!/myst.yml
+!*.md
+!*.ipynb
+!/references.bib
+# Python files in the root, which notebooks import and pages show (chile's chile_widgets.py)
+!/*.py
+
+# pictures the pages show (figures in .md files), in any folder
+!*.png
+!*.jpg
+!*.jpeg
+!*.gif
+!*.webp
+# ModelFlow's drawings in a graph\ folder, also as .svg (other .svg files, like the
+# diagram sources of general, stay local)
+!**/graph/**/*.svg
+
+# the repo itself
+!/.gitignore
+!/.gitattributes
+!/LICENSE
+!/.github/workflows/*.yml
+
+# local only, whatever is in them
+_build/
+exports/
+latex/
+.ipynb_checkpoints/

@@ -1,0 +1,45 @@
+version: 1
+project:
+  id: modelflow-chile
+  title: ModelFlow models for Chile
+  authors:
+    - name: Ib Hansen
+  description: >-
+    Chilean macro-fiscal and pension models in ModelFlow. The first, the deterministic
+    macro-fiscal model, is ported from a Stata do-file and reproduces its results.
+  bibliography:
+    - references.bib
+  exports:
+    - format: pdf
+      template: latex/mfbook-template
+      output: exports/pdf/chile.pdf
+      articles: &chapters
+        - intro.md
+        - chile_scenarios.ipynb
+        - chile_scenario_widget.ipynb
+        - chile_macrofiscal_deterministic.ipynb
+        - model_documentation.md
+        - chile_widget_test.ipynb
+    - format: tex
+      template: latex/mfbook-template
+      output: exports/tex/chile.tex
+      articles: *chapters
+  jupyter:
+    lite: true
+  toc:
+    - file: intro.md
+      title: Introduction
+    - file: chile_scenarios.ipynb
+      title: Five scenarios
+    - file: chile_scenario_widget.ipynb
+      title: The scenarios with sliders
+    - file: chile_macrofiscal_deterministic.ipynb
+      title: Loading the macro-fiscal model
+    - file: model_documentation.md
+      title: Model documentation
+    - file: chile_widget_test.ipynb
+      title: Testing the scenario widget
+site:
+  template: book-theme
+  options:
+    logo_text: ModelFlow Chile

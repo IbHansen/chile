@@ -1,0 +1,68 @@
+# Builds this Jupyter Book (HTML) and publishes it on GitHub Pages at
+# https://ibhansen.github.io/<repo name>/
+# In the repo: Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+#
+# Generated - the master is C:\deploy\bookcontrol\shared\.github\workflows\deploy.yml,
+# copied into every book repo by C:\deploy\publish\publish.bat. Edit the master.
+#
+# No ModelFlow here: Jupyter Book 2 does not execute notebooks, it shows the outputs
+# stored when they were run locally.
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    outputs:
+      # one artifact name per run attempt: a re-run would otherwise leave two artifacts
+      # called github-pages in the run, and deploy-pages refuses to choose
+      artifact: github-pages-${{ github.run_attempt }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install Jupyter Book
+        # the same version as in the local env book314 - bump both together.
+        # Node comes with the runner image (Jupyter Book 2 needs Node >= 18).
+        run: |
+          node --version
+          python -m pip install jupyter-book==2.1.6
+      - name: Build the book
+        env:
+          # the site lives under /<repo name>; without this the links 404 on Pages
+          BASE_URL: /${{ github.event.repository.name }}
+        run: jupyter book build --html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          name: github-pages-${{ github.run_attempt }}
+          path: ./_build/html
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+        with:
+          # from the build job, so "Re-run failed jobs" (deploy only) still finds it
+          artifact_name: ${{ needs.build.outputs.artifact }}
