@@ -38,7 +38,7 @@ jobs:
         # Node comes with the runner image (Jupyter Book 2 needs Node >= 18).
         run: |
           node --version
-          python -m pip install jupyter-book==2.1.6
+          python -m pip install jupyter-book==2.1.7
       - name: Build the book
         env:
           # the site lives under /<repo name>; without this the links 404 on Pages
