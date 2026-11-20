@@ -39,6 +39,11 @@ jobs:
         run: |
           node --version
           python -m pip install jupyter-book==2.1.7
+      - name: Get the bibliography
+        # the one references.bib of all the books, from the public repo
+        # IbHansen/references (locally C:\mfmodeller\modelflow_material\Litteratur\references).
+        # -f: a failed download stops the build instead of publishing without references
+        run: curl -fsSL https://raw.githubusercontent.com/IbHansen/references/main/references.bib -o references.bib
       - name: Build the book
         env:
           # the site lives under /<repo name>; without this the links 404 on Pages

@@ -8,11 +8,11 @@
 *
 !*/
 
-# the book: its configuration, pages and bibliography
+# the book: its configuration and pages. Not references.bib: the Pages workflow downloads
+# it from the public repo IbHansen/references; the copy publish puts here is local only
 !/myst.yml
 !*.md
 !*.ipynb
-!/references.bib
 # Python files in the root, which notebooks import and pages show (chile's chile_widgets.py)
 !/*.py
 
